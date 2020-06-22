@@ -1,7 +1,7 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
-contract Impl {
-  function version() public pure returns (string memory); 
+abstract contract Impl {
+  function version() public pure virtual returns (string memory);
 }
 
 contract DummyImplementation {
@@ -35,7 +35,7 @@ contract DummyImplementation {
     return true;
   }
 
-  function version() public pure returns (string memory) {
+  function version() public pure virtual returns (string memory) {
     return "V1";
   }
 
@@ -49,7 +49,7 @@ contract DummyImplementationV2 is DummyImplementation {
     value = newVal;
   }
 
-  function version() public pure returns (string memory) {
+  function version() public override(DummyImplementation) pure returns (string memory) {
     return "V2";
   }
 }

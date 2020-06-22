@@ -99,7 +99,7 @@ describe('SolidityProjectCompiler', function() {
     it('outputs friendly warning and solc error on invalid import', async function() {
       const logWarnStub = sinon.stub(Loggy.noSpin, 'warn');
 
-      writeFileSync(`${inputDir}/Invalid.sol`, 'pragma solidity ^0.5.0; import "./NotExists.sol";');
+      writeFileSync(`${inputDir}/Invalid.sol`, 'pragma solidity ^0.6.0; import "./NotExists.sol";');
       await compileProject({ inputDir, outputDir }).should.be.rejectedWith(/File import callback not supported/i);
 
       logWarnStub.calledOnce.should.equal(true);
@@ -203,7 +203,7 @@ describe('SolidityProjectCompiler', function() {
       await fs.writeFile(
         `${inputDir}/Root.sol`,
         `
-        pragma solidity ^0.5.0;
+        pragma solidity ^0.6.0;
         import "./subfolder/GreeterLib.sol";
         import "contracts/subfolder/GreeterLib2.sol";
         contract Root { }

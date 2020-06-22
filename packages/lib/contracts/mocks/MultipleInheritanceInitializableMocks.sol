@@ -1,10 +1,10 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 import '../Initializable.sol';
 
 // Sample contracts showing upgradeability with multiple inheritance.
 // Child contract inherits from Father and Mother contracts, and Father extends from Gramps.
-// 
+//
 //         Human
 //       /       \
 //      |       Gramps
@@ -19,7 +19,7 @@ import '../Initializable.sol';
 contract SampleHuman is Initializable {
   bool public isHuman;
 
-  function initialize() initializer public {
+  function initialize() initializer virtual public {
     isHuman = true;
   }
 }
@@ -30,7 +30,7 @@ contract SampleHuman is Initializable {
 contract SampleMother is Initializable, SampleHuman {
   uint256 public mother;
 
-  function initialize(uint256 value) initializer public {
+  function initialize(uint256 value) initializer virtual public {
     SampleHuman.initialize();
     mother = value;
   }
@@ -42,7 +42,7 @@ contract SampleMother is Initializable, SampleHuman {
 contract SampleGramps is Initializable, SampleHuman {
   uint256 public gramps;
 
-  function initialize(uint256 value) initializer public {
+  function initialize(uint256 value) initializer virtual public {
     SampleHuman.initialize();
     gramps = value;
   }
@@ -54,7 +54,7 @@ contract SampleGramps is Initializable, SampleHuman {
 contract SampleFather is Initializable, SampleGramps {
   uint256 public father;
 
-  function initialize(uint256 _gramps, uint256 _father) initializer public {
+  function initialize(uint256 _gramps, uint256 _father) initializer virtual public {
     SampleGramps.initialize(_gramps);
     father = _father;
   }
@@ -71,4 +71,12 @@ contract SampleChild is Initializable, SampleMother, SampleFather {
     SampleFather.initialize(_gramps, _father);
     child = _child;
   }
+
+  function initialize(uint256 value) initializer override(SampleMother, SampleGramps) public {
+  }
+
+  function initialize(uint256 _gramps, uint256 _father) initializer override(SampleFather) public {
+  }
+
+
 }

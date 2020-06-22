@@ -1,10 +1,10 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 import './ZosBaseAdminUpgradeabilityProxy.sol';
 
 /**
  * @title AdminUpgradeabilityProxy
- * @dev Extends from BaseAdminUpgradeabilityProxy with a constructor for 
+ * @dev Extends from BaseAdminUpgradeabilityProxy with a constructor for
  * initializing the implementation, admin, and init data.
  */
 contract ZosAdminUpgradeabilityProxy is ZosBaseAdminUpgradeabilityProxy, ZosUpgradeabilityProxy {
@@ -21,4 +21,13 @@ contract ZosAdminUpgradeabilityProxy is ZosBaseAdminUpgradeabilityProxy, ZosUpgr
     assert(ADMIN_SLOT == keccak256("org.zeppelinos.proxy.admin"));
     _setAdmin(_admin);
   }
+
+  /**
+   * @dev Only fall back when the sender is not the admin.
+   */
+  function _willFallback() internal override(Proxy) {
+    require(msg.sender != _admin(), "Cannot call fallback function from the proxy admin");
+    super._willFallback();
+  }
+
 }

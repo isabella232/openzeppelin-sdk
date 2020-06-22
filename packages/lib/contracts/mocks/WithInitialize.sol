@@ -1,11 +1,11 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 import "../Initializable.sol";
 
 contract WithInitialize {
   uint public value;
 
-  function initialize() public {
+  function initialize() public virtual {
     value = 42;
   }
 }
@@ -27,7 +27,7 @@ contract WithoutInitialize {
 contract WithBaseUninitialized is WithInitialize, AnotherWithInitialize {
   uint public someValue;
 
-  function initialize() public {
+  function initialize() public override {
     someValue = 42;
   }
 }
@@ -35,7 +35,7 @@ contract WithBaseUninitialized is WithInitialize, AnotherWithInitialize {
 contract WithBaseInitialized is WithInitialize, AnotherWithInitialize {
   uint public someValue;
 
-  function initialize() public {
+  function initialize() public override {
     WithInitialize.initialize();
     AnotherWithInitialize.init();
     someValue = 42;

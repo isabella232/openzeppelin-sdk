@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 // Test import with path relative to project root
 import "contracts/subfolder/GreeterLib.sol";

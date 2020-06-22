@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 import "mock-stdlib/contracts/Greeter.sol";
 import "mock-stdlib/contracts/SharedLibrary.sol";

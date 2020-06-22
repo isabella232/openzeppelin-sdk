@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 import "../Initializable.sol";
 
@@ -57,7 +57,7 @@ contract Implementation4 is Initializable {
     return value;
   }
 
-  function() external {
+  fallback() external {
     value = 1;
   }
 }

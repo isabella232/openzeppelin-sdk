@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 import "../Initializable.sol";
 
@@ -15,7 +15,7 @@ interface IERC165 {
      * @dev Interface identification is specified in ERC-165. This function
      * uses less than 30,000 gas.
      */
-    function supportsInterface(bytes4 interfaceId) external view returns (bool);
+    function supportsInterface(bytes4 interfaceId) external view virtual returns (bool);
 }
 
 // File: contracts/token/MockERC721/IMockERC721.sol
@@ -26,24 +26,24 @@ interface IERC165 {
  * @title MockERC721 Non-Fungible Token Standard basic interface
  * @dev see https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
  */
-contract IMockERC721 is Initializable, IERC165 {
+abstract contract IMockERC721 is Initializable, IERC165 {
     event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
     event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
     event ApprovalForAll(address indexed owner, address indexed operator, bool approved);
 
-    function balanceOf(address owner) public view returns (uint256 balance);
-    function ownerOf(uint256 tokenId) public view returns (address owner);
-
-    function approve(address to, uint256 tokenId) public;
-    function getApproved(uint256 tokenId) public view returns (address operator);
-
-    function setApprovalForAll(address operator, bool _approved) public;
-    function isApprovedForAll(address owner, address operator) public view returns (bool);
-
-    function transferFrom(address from, address to, uint256 tokenId) public;
-    function safeTransferFrom(address from, address to, uint256 tokenId) public;
-
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) public;
+    // function balanceOf(address owner) public view virtual returns (uint256 balance);
+    // function ownerOf(uint256 tokenId) public view virtual returns (address owner);
+    //
+    // function approve(address to, uint256 tokenId) public virtual;
+    // function getApproved(uint256 tokenId) public view virtual returns (address operator);
+    //
+    // function setApprovalForAll(address operator, bool _approved) public virtual;
+    // function isApprovedForAll(address owner, address operator) public view virtual returns (bool) ;
+    //
+    // function transferFrom(address from, address to, uint256 tokenId) public virtual;
+    // function safeTransferFrom(address from, address to, uint256 tokenId) public virtual;
+    //
+    // function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) public virtual;
 }
 
 // File: contracts/token/MockERC721/IMockERC721Receiver.sol
@@ -53,7 +53,7 @@ contract IMockERC721 is Initializable, IERC165 {
  * @dev Interface for any contract that wants to support safeTransfers
  * from MockERC721 asset contracts.
  */
-contract IMockERC721Receiver {
+abstract contract IMockERC721Receiver {
     /**
      * @notice Handle the receipt of an NFT
      * @dev The MockERC721 smart contract calls this function on the recipient
@@ -69,7 +69,7 @@ contract IMockERC721Receiver {
      * @return `bytes4(keccak256("onMockERC721Received(address,address,uint256,bytes)"))`
      */
     function onMockERC721Received(address operator, address from, uint256 tokenId, bytes memory data)
-    public returns (bytes4);
+    public virtual returns (bytes4);
 }
 
 // File: contracts/math/SafeMath.sol
@@ -190,14 +190,14 @@ contract ERC165 is Initializable, IERC165 {
      * @dev A contract implementing SupportsInterfaceWithLookup
      * implement ERC165 itself
      */
-    function initialize() public initializer {
+    function initializeERC165() public initializer  {
         _registerInterface(_INTERFACE_ID_ERC165);
     }
 
     /**
      * @dev implement supportsInterface(bytes4) using a lookup table
      */
-    function supportsInterface(bytes4 interfaceId) public view returns (bool) {
+    function supportsInterface(bytes4 interfaceId) public view override returns (bool) {
         return _supportedInterfaces[interfaceId];
     }
 
@@ -252,14 +252,14 @@ contract MockERC721 is Initializable, ERC165, IMockERC721 {
      *     bytes4(keccak256('safeTransferFrom(address,address,uint256,bytes)'))
      */
 
-    function initialize() public initializer {
-        ERC165.initialize();
+    function initialize() public initializer virtual {
+        ERC165.initializeERC165();
 
         // register the supported interfaces to conform to MockERC721 via ERC165
         _registerInterface(_INTERFACE_ID_MockERC721);
     }
 
-    function _hasBeenInitialized() internal view returns (bool) {
+    function _hasBeenInitializedMockERC721() internal view virtual returns (bool) {
         return supportsInterface(_INTERFACE_ID_MockERC721);
     }
 
@@ -292,7 +292,7 @@ contract MockERC721 is Initializable, ERC165, IMockERC721 {
      * @param to address to be approved for the given token ID
      * @param tokenId uint256 ID of the token to be approved
      */
-    function approve(address to, uint256 tokenId) public {
+    function approveMockERC721(address to, uint256 tokenId) public {
         address owner = ownerOf(tokenId);
         require(to != owner);
         require(msg.sender == owner || isApprovedForAll(owner, msg.sender));
@@ -307,7 +307,7 @@ contract MockERC721 is Initializable, ERC165, IMockERC721 {
      * @param tokenId uint256 ID of the token to query the approval of
      * @return address currently approved for the given token ID
      */
-    function getApproved(uint256 tokenId) public view returns (address) {
+    function getApproved(uint256 tokenId) public view  returns (address) {
         require(_exists(tokenId));
         return _tokenApprovals[tokenId];
     }
@@ -318,7 +318,7 @@ contract MockERC721 is Initializable, ERC165, IMockERC721 {
      * @param to operator address to set the approval
      * @param approved representing the status of the approval to be set
      */
-    function setApprovalForAll(address to, bool approved) public {
+    function setApprovalForAllMockERC721(address to, bool approved) public {
         require(to != msg.sender);
         _operatorApprovals[msg.sender][to] = approved;
         emit ApprovalForAll(msg.sender, to, approved);
@@ -330,7 +330,7 @@ contract MockERC721 is Initializable, ERC165, IMockERC721 {
      * @param operator operator address which you want to query the approval of
      * @return bool whether the given operator is approved by the given owner
      */
-    function isApprovedForAll(address owner, address operator) public view returns (bool) {
+    function isApprovedForAll(address owner, address operator) public view  returns (bool) {
         return _operatorApprovals[owner][operator];
     }
 
@@ -342,10 +342,10 @@ contract MockERC721 is Initializable, ERC165, IMockERC721 {
      * @param to address to receive the ownership of the given token ID
      * @param tokenId uint256 ID of the token to be transferred
     */
-    function transferFrom(address from, address to, uint256 tokenId) public {
+    function transferFromMockERC721(address from, address to, uint256 tokenId) public virtual {
         require(_isApprovedOrOwner(msg.sender, tokenId));
 
-        _transferFrom(from, to, tokenId);
+        _transferFromMockERC721(from, to, tokenId);
     }
 
     /**
@@ -360,7 +360,7 @@ contract MockERC721 is Initializable, ERC165, IMockERC721 {
      * @param to address to receive the ownership of the given token ID
      * @param tokenId uint256 ID of the token to be transferred
     */
-    function safeTransferFrom(address from, address to, uint256 tokenId) public {
+    function safeTransferFrom(address from, address to, uint256 tokenId) public  {
         safeTransferFrom(from, to, tokenId, "");
     }
 
@@ -376,8 +376,8 @@ contract MockERC721 is Initializable, ERC165, IMockERC721 {
      * @param tokenId uint256 ID of the token to be transferred
      * @param _data bytes data to send along with a safe transfer check
      */
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public {
-        transferFrom(from, to, tokenId);
+    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public  {
+        transferFromMockERC721(from, to, tokenId);
         require(_checkOnMockERC721Received(from, to, tokenId, _data));
     }
 
@@ -409,7 +409,7 @@ contract MockERC721 is Initializable, ERC165, IMockERC721 {
      * @param to The address that will own the minted token
      * @param tokenId uint256 ID of the token to be minted
      */
-    function _mint(address to, uint256 tokenId) internal {
+    function _mintMockERC721(address to, uint256 tokenId) internal  {
         require(to != address(0));
         require(!_exists(tokenId));
 
@@ -426,7 +426,7 @@ contract MockERC721 is Initializable, ERC165, IMockERC721 {
      * @param owner owner of the token to burn
      * @param tokenId uint256 ID of the token being burned
      */
-    function _burn(address owner, uint256 tokenId) internal {
+    function _burnMockERC721(address owner, uint256 tokenId) internal {
         require(ownerOf(tokenId) == owner);
 
         _clearApproval(tokenId);
@@ -443,7 +443,7 @@ contract MockERC721 is Initializable, ERC165, IMockERC721 {
      * @param tokenId uint256 ID of the token being burned
      */
     function _burn(uint256 tokenId) internal {
-        _burn(ownerOf(tokenId), tokenId);
+        _burnMockERC721(ownerOf(tokenId), tokenId);
     }
 
     /**
@@ -453,7 +453,7 @@ contract MockERC721 is Initializable, ERC165, IMockERC721 {
      * @param to address to receive the ownership of the given token ID
      * @param tokenId uint256 ID of the token to be transferred
     */
-    function _transferFrom(address from, address to, uint256 tokenId) internal {
+    function _transferFromMockERC721(address from, address to, uint256 tokenId) internal  {
         require(ownerOf(tokenId) == from);
         require(to != address(0));
 
@@ -508,11 +508,11 @@ contract MockERC721 is Initializable, ERC165, IMockERC721 {
  * @title ERC-721 Non-Fungible Token Standard, optional enumeration extension
  * @dev See https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
  */
-contract IMockERC721Enumerable is Initializable, IMockERC721 {
-    function totalSupply() public view returns (uint256);
-    function tokenOfOwnerByIndex(address owner, uint256 index) public view returns (uint256 tokenId);
+abstract contract IMockERC721Enumerable is Initializable, IMockERC721 {
+    function totalSupply() public view virtual returns (uint256);
+    function tokenOfOwnerByIndex(address owner, uint256 index) public view virtual returns (uint256 tokenId);
 
-    function tokenByIndex(uint256 index) public view returns (uint256);
+    function tokenByIndex(uint256 index) public view virtual returns (uint256);
 }
 
 // File: contracts/token/MockERC721/MockERC721Enumerable.sol
@@ -549,14 +549,14 @@ contract MockERC721Enumerable is Initializable, ERC165, MockERC721, IMockERC721E
     /**
      * @dev Constructor function
      */
-    function initialize() public initializer {
-        require(MockERC721._hasBeenInitialized());
+    function initializeMockERC721Enumerable() public initializer {
+        require(MockERC721._hasBeenInitializedMockERC721());
 
         // register the supported interface to conform to MockERC721 via ERC165
         _registerInterface(_INTERFACE_ID_MockERC721_ENUMERABLE);
     }
 
-    function _hasBeenInitialized() internal view returns (bool) {
+    function _hasBeenInitialized() internal view virtual returns (bool) {
         return supportsInterface(_INTERFACE_ID_MockERC721_ENUMERABLE);
     }
 
@@ -566,7 +566,7 @@ contract MockERC721Enumerable is Initializable, ERC165, MockERC721, IMockERC721E
      * @param index uint256 representing the index to be accessed of the requested tokens list
      * @return uint256 token ID at the given index of the tokens list owned by the requested address
      */
-    function tokenOfOwnerByIndex(address owner, uint256 index) public view returns (uint256) {
+    function tokenOfOwnerByIndex(address owner, uint256 index) public view override returns (uint256) {
         require(index < balanceOf(owner));
         return _ownedTokens[owner][index];
     }
@@ -575,7 +575,7 @@ contract MockERC721Enumerable is Initializable, ERC165, MockERC721, IMockERC721E
      * @dev Gets the total amount of tokens stored by the contract
      * @return uint256 representing the total amount of tokens
      */
-    function totalSupply() public view returns (uint256) {
+    function totalSupply() public view override returns (uint256) {
         return _allTokens.length;
     }
 
@@ -585,7 +585,7 @@ contract MockERC721Enumerable is Initializable, ERC165, MockERC721, IMockERC721E
      * @param index uint256 representing the index to be accessed of the tokens list
      * @return uint256 token ID at the given index of the tokens list
      */
-    function tokenByIndex(uint256 index) public view returns (uint256) {
+    function tokenByIndex(uint256 index) public view override returns (uint256) {
         require(index < totalSupply());
         return _allTokens[index];
     }
@@ -597,8 +597,8 @@ contract MockERC721Enumerable is Initializable, ERC165, MockERC721, IMockERC721E
      * @param to address to receive the ownership of the given token ID
      * @param tokenId uint256 ID of the token to be transferred
     */
-    function _transferFrom(address from, address to, uint256 tokenId) internal {
-        super._transferFrom(from, to, tokenId);
+    function _transferFrom(address from, address to, uint256 tokenId) internal  {
+        super._transferFromMockERC721(from, to, tokenId);
 
         _removeTokenFromOwnerEnumeration(from, tokenId);
 
@@ -611,8 +611,8 @@ contract MockERC721Enumerable is Initializable, ERC165, MockERC721, IMockERC721E
      * @param to address the beneficiary that will own the minted token
      * @param tokenId uint256 ID of the token to be minted
      */
-    function _mint(address to, uint256 tokenId) internal {
-        super._mint(to, tokenId);
+    function _mint(address to, uint256 tokenId) internal virtual {
+        super._mintMockERC721(to, tokenId);
 
         _addTokenToOwnerEnumeration(to, tokenId);
 
@@ -626,8 +626,8 @@ contract MockERC721Enumerable is Initializable, ERC165, MockERC721, IMockERC721E
      * @param owner owner of the token to burn
      * @param tokenId uint256 ID of the token being burned
      */
-    function _burn(address owner, uint256 tokenId) internal {
-        super._burn(owner, tokenId);
+    function _burn(address owner, uint256 tokenId) internal virtual {
+        super._burnMockERC721(owner, tokenId);
 
         _removeTokenFromOwnerEnumeration(owner, tokenId);
         // Since tokenId will be deleted, we can clear its slot in _ownedTokensIndex to trigger a gas refund
@@ -688,8 +688,8 @@ contract MockERC721Enumerable is Initializable, ERC165, MockERC721, IMockERC721E
         }
 
         // This also deletes the contents at the last position of the array
-        _ownedTokens[from].length--;
-
+        //_ownedTokens[from].length--;
+        _ownedTokens[from].pop();
         // Note that _ownedTokensIndex[tokenId] hasn't been cleared: it still points to the old slot (now occcupied by
         // lasTokenId, or just over the end of the array if the token was the last one).
     }
@@ -715,8 +715,8 @@ contract MockERC721Enumerable is Initializable, ERC165, MockERC721, IMockERC721E
         _allTokensIndex[lastTokenId] = tokenIndex; // Update the moved token's index
 
         // This also deletes the contents at the last position of the array
-        _allTokens.length--;
-        _allTokensIndex[tokenId] = 0;
+        _allTokens.pop();
+        //_allTokensIndex[tokenId] = 0;
     }
 
     uint256[50] private ______gap;
@@ -730,10 +730,10 @@ contract MockERC721Enumerable is Initializable, ERC165, MockERC721, IMockERC721E
  * @title ERC-721 Non-Fungible Token Standard, optional metadata extension
  * @dev See https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
  */
-contract IMockERC721Metadata is Initializable, IMockERC721 {
-    function name() external view returns (string memory);
-    function symbol() external view returns (string memory);
-    function tokenURI(uint256 tokenId) external view returns (string memory);
+abstract contract IMockERC721Metadata is Initializable, IMockERC721 {
+    function name() external view virtual returns (string memory);
+    function symbol() external view virtual returns (string memory);
+    function tokenURI(uint256 tokenId) external view virtual returns (string memory);
 }
 
 // File: contracts/token/MockERC721/MockERC721Metadata.sol
@@ -764,7 +764,7 @@ contract MockERC721Metadata is Initializable, ERC165, MockERC721, IMockERC721Met
      * @dev Constructor function
      */
     function initialize(string memory name, string memory symbol) public initializer {
-        require(MockERC721._hasBeenInitialized());
+        require(MockERC721._hasBeenInitializedMockERC721());
 
         _name = name;
         _symbol = symbol;
@@ -773,7 +773,7 @@ contract MockERC721Metadata is Initializable, ERC165, MockERC721, IMockERC721Met
         _registerInterface(_INTERFACE_ID_MockERC721_METADATA);
     }
 
-    function _hasBeenInitialized() internal view returns (bool) {
+    function _hasBeenInitialized() internal view virtual returns (bool) {
         return supportsInterface(_INTERFACE_ID_MockERC721_METADATA);
     }
 
@@ -781,7 +781,7 @@ contract MockERC721Metadata is Initializable, ERC165, MockERC721, IMockERC721Met
      * @dev Gets the token name
      * @return string representing the token name
      */
-    function name() external view returns (string memory) {
+    function name() external view override returns (string memory) {
         return _name;
     }
 
@@ -789,7 +789,7 @@ contract MockERC721Metadata is Initializable, ERC165, MockERC721, IMockERC721Met
      * @dev Gets the token symbol
      * @return string representing the token symbol
      */
-    function symbol() external view returns (string memory) {
+    function symbol() external view override returns (string memory) {
         return _symbol;
     }
 
@@ -798,7 +798,7 @@ contract MockERC721Metadata is Initializable, ERC165, MockERC721, IMockERC721Met
      * Throws if the token ID does not exist. May return an empty string.
      * @param tokenId uint256 ID of the token to query
      */
-    function tokenURI(uint256 tokenId) external view returns (string memory) {
+    function tokenURI(uint256 tokenId) external view override returns (string memory) {
         require(_exists(tokenId));
         return _tokenURIs[tokenId];
     }
@@ -821,8 +821,8 @@ contract MockERC721Metadata is Initializable, ERC165, MockERC721, IMockERC721Met
      * @param owner owner of the token to burn
      * @param tokenId uint256 ID of the token being burned by the msg.sender
      */
-    function _burn(address owner, uint256 tokenId) internal {
-        super._burn(owner, tokenId);
+    function _burn(address owner, uint256 tokenId) internal virtual {
+        super._burnMockERC721(owner, tokenId);
 
         // Clear metadata (if any)
         if (bytes(_tokenURIs[tokenId]).length != 0) {
@@ -887,7 +887,7 @@ contract MinterRole is Initializable {
 
     Roles.Role private _minters;
 
-    function initialize(address sender) public initializer {
+    function initializeMinterRole(address sender) public initializer  {
         if (!isMinter(sender)) {
             _addMinter(sender);
         }
@@ -934,11 +934,15 @@ contract MinterRole is Initializable {
  * @dev MockERC721 minting logic with metadata
  */
 contract MockERC721MetadataMintable is Initializable, MockERC721, MockERC721Metadata, MinterRole {
-    function initialize(address sender) public initializer {
-        require(MockERC721._hasBeenInitialized());
+    function initializeMockERC721MetadataMintable(address sender) public initializer {
+        require(MockERC721._hasBeenInitializedMockERC721());
         require(MockERC721Metadata._hasBeenInitialized());
-        MinterRole.initialize(sender);
+        MinterRole.initializeMinterRole(sender);
     }
+
+    // function _burn(address owner, uint256 tokenId) internal override(MockERC721Metadata) {
+    //     MockERC721Metadata._burn(owner, tokenId);
+    // }
 
     /**
      * @dev Function to mint tokens
@@ -948,7 +952,7 @@ contract MockERC721MetadataMintable is Initializable, MockERC721, MockERC721Meta
      * @return A boolean that indicates if the operation was successful.
      */
     function mintWithTokenURI(address to, uint256 tokenId, string memory tokenURI) public onlyMinter returns (bool) {
-        _mint(to, tokenId);
+        _mintMockERC721(to, tokenId);
         _setTokenURI(tokenId, tokenURI);
         return true;
     }
@@ -969,7 +973,7 @@ contract PauserRole is Initializable {
 
     Roles.Role private _pausers;
 
-    function initialize(address sender) public initializer {
+    function initializePauserRole(address sender) public initializer {
         if (!isPauser(sender)) {
             _addPauser(sender);
         }
@@ -1019,8 +1023,8 @@ contract Pausable is Initializable, PauserRole {
 
     bool private _paused;
 
-    function initialize(address sender) public initializer {
-        PauserRole.initialize(sender);
+    function initializePausable(address sender) public initializer {
+        PauserRole.initializePauserRole(sender);
 
         _paused = false;
     }
@@ -1078,20 +1082,20 @@ contract Pausable is Initializable, PauserRole {
  **/
 contract MockERC721Pausable is Initializable, MockERC721, Pausable {
     function initialize(address sender) public initializer {
-        require(MockERC721._hasBeenInitialized());
-        Pausable.initialize(sender);
+        require(MockERC721._hasBeenInitializedMockERC721());
+        Pausable.initializePausable(sender);
     }
 
     function approve(address to, uint256 tokenId) public whenNotPaused {
-        super.approve(to, tokenId);
+        super.approveMockERC721(to, tokenId);
     }
 
-    function setApprovalForAll(address to, bool approved) public whenNotPaused {
-        super.setApprovalForAll(to, approved);
+    function setApprovalForAll(address to, bool approved) public whenNotPaused  {
+        super.setApprovalForAllMockERC721(to, approved);
     }
 
-    function transferFrom(address from, address to, uint256 tokenId) public whenNotPaused {
-        super.transferFrom(from, to, tokenId);
+    function transferFrom(address from, address to, uint256 tokenId) public whenNotPaused  {
+        super.transferFromMockERC721(from, to, tokenId);
     }
 
     uint256[50] private ______gap;
@@ -1115,11 +1119,11 @@ contract MockStandaloneERC721
 {
     function initialize(string memory name, string memory symbol, address[] memory minters, address[] memory pausers) public initializer {
         MockERC721.initialize();
-        MockERC721Enumerable.initialize();
+        MockERC721Enumerable.initializeMockERC721Enumerable();
         MockERC721Metadata.initialize(name, symbol);
 
         // Initialize the minter and pauser roles, and renounce them
-        MockERC721MetadataMintable.initialize(address(this));
+        MockERC721MetadataMintable.initializeMockERC721MetadataMintable(address(this));
         _removeMinter(address(this));
 
         MockERC721Pausable.initialize(address(this));
@@ -1134,5 +1138,39 @@ contract MockStandaloneERC721
         for (uint256 i = 0; i < pausers.length; ++i) {
             _addPauser(pausers[i]);
         }
+    }
+
+    // function transferFrom(address from, address to, uint256 tokenId) public override {
+    //     require(_isApprovedOrOwner(msg.sender, tokenId));
+    //
+    //     _transferFrom(from, to, tokenId);
+    // }
+
+    // function setApprovalForAll(address to, bool approved) public override {
+    //     MockERC721.setApprovalForAll(to, approved);
+    // }
+
+    // function initialize(address sender) public initializer override {
+    //     require(MockERC721._hasBeenInitializedMockERC721());
+    //     require(MockERC721Metadata._hasBeenInitialized());
+    //     MinterRole.initialize(sender);
+    // }
+
+    // function initialize() public initializer override(ERC165) {
+    //     ERC165.initializeERC165();
+    // }
+    function _burn(address owner, uint256 tokenId) internal override(MockERC721Enumerable,MockERC721Metadata) {
+       MockERC721Enumerable._burn(owner, tokenId);
+       MockERC721Metadata._burn(owner, tokenId);
+
+    }
+    function _hasBeenInitialized() internal view override(MockERC721Enumerable, MockERC721Metadata) returns (bool) {
+      MockERC721Enumerable._hasBeenInitialized();
+      MockERC721Metadata._hasBeenInitialized();
+
+    }
+
+    function _mint(address to, uint256 tokenId) internal override(MockERC721Enumerable) {
+      MockERC721Enumerable._mint(to,tokenId);
     }
 }

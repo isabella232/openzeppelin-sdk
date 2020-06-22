@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 // Added just for having a circular reference
 import "./StorageMocks3.sol";

@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 contract WithoutInitialValuesInFieldsDeclarations {
   uint constant myConst = 115994;
@@ -11,7 +11,7 @@ contract WithoutInitialValuesInFieldsDeclarations {
 contract WithInitialValuesInFieldsDeclarations {
   string public allaps = 'allaps';
 
-  function doSomething() public pure returns (string memory) {
+  function doSomething() public pure virtual returns (string memory) {
     return 'do';
   }
 }
@@ -19,8 +19,7 @@ contract WithInitialValuesInFieldsDeclarations {
 contract WithParentWithInitialValuesInFieldsDeclarations is WithInitialValuesInFieldsDeclarations {
   string public myVar;
 
-  function doSomething() public pure returns (string memory) {
+  function doSomething() public pure override returns (string memory) {
     return 'do';
   }
 }
-

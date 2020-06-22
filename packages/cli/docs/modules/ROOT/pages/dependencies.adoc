@@ -104,7 +104,7 @@ Now, let's write our exchange contract in `contracts/TokenExchange.sol`, using a
 [source,solidity]
 ----
 // contracts/TokenExchange.sol
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 // Import base Initializable contract
 import "@openzeppelin/upgrades/contracts/Initializable.sol";

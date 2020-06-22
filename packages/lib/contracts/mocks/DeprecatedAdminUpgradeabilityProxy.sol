@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 import '../upgradeability/UpgradeabilityProxy.sol';
 
@@ -103,7 +103,7 @@ contract DeprecatedAdminUpgradeabilityProxy is UpgradeabilityProxy {
   }
 
   /**
-   * @return The admin slot.
+   * @return adm The admin slot.
    */
   function _admin() internal view returns (address adm) {
     bytes32 slot = ADMIN_SLOT;
@@ -127,7 +127,7 @@ contract DeprecatedAdminUpgradeabilityProxy is UpgradeabilityProxy {
   /**
    * @dev Only fall back when the sender is not the admin.
    */
-  function _willFallback() internal {
+  function _willFallback() internal override {
     require(msg.sender != _admin(), "Cannot call fallback function from the proxy admin");
     super._willFallback();
   }

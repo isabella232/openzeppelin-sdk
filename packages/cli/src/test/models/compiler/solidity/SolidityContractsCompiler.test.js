@@ -41,26 +41,26 @@ describe('SolidityContractsCompiler', function() {
     fileName: 'Example05.sol',
     filePath: '/test/Example05.sol',
     source:
-      'pragma solidity ^0.5.0; contract Example05 { function f() public pure returns (string memory) { return "bla"; } }',
+      'pragma solidity ^0.6.0; contract Example05 { function f() public pure returns (string memory) { return "bla"; } }',
   };
 
   const anotherContract_Solc05 = {
     fileName: 'AnotherExample05.sol',
     filePath: '/test/AnotherExample05.sol',
     source:
-      'pragma solidity ^0.5.0; contract AnotherExample05 { function f() public pure returns (uint) { return 2; } }',
+      'pragma solidity ^0.6.0; contract AnotherExample05 { function f() public pure returns (uint) { return 2; } }',
   };
 
   const contractWithWarnings_Solc05 = {
     fileName: 'ExampleWithWarnings05.sol',
     filePath: '/test/ExampleWithWarnings05.sol',
-    source: 'pragma solidity ^0.5.0; contract ExampleWithWarnings05 { function f() public { } }',
+    source: 'pragma solidity ^0.6.0; contract ExampleWithWarnings05 { function f() public { } }',
   };
 
   const contractWithErrors_Solc05 = {
     fileName: 'ExampleWithErrors05.sol',
     filePath: '/test/ExampleWithErrors.sol',
-    source: 'pragma solidity ^0.5.0; contract ExampleWithErrors05 { function f() public { return 2; } }',
+    source: 'pragma solidity ^0.6.0; contract ExampleWithErrors05 { function f() public { return 2; } }',
   };
 
   const contractNoPragma_Solc05 = {

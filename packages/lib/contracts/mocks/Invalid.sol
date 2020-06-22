@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 import "mock-dependency/contracts/Greeter.sol";
 import "mock-dependency/contracts/DependencyInvalid.sol";
@@ -50,13 +50,13 @@ contract WithSelfDestruct {
       selfdestruct(msg.sender);
   }
 
-  function say() public pure returns (string memory) {
+  function say() public pure virtual returns (string memory) {
     return "WithSelfDestruct";
   }
 }
 
 contract WithParentWithSelfDestruct is WithSelfDestruct {
-  function say() public pure returns (string memory) {
+  function say() public pure override(WithSelfDestruct) returns (string memory) {
     return "WithParentWithSelfDestruct";
   }
 }
@@ -68,8 +68,8 @@ contract WithDelegateCall {
     (bool success,) = _e.delegatecall(data);
     require(success);
   }
-  
-  function say() public pure returns (string memory) {
+
+  function say() public pure virtual returns (string memory) {
     return "WithDelegateCall";
   }
 }
@@ -78,7 +78,7 @@ contract WithParentWithDelegateCall is WithDelegateCall {
   constructor(address _e) public WithDelegateCall(_e) {
   }
 
-  function say() public pure returns (string memory) {
+  function say() public pure override returns (string memory) {
     return "WithParentWithDelegateCall";
   }
 }

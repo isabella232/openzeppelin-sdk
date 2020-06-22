@@ -249,7 +249,7 @@ An advanced alternative, if you need to create upgradeable contracts on the fly,
 ----
 // contracts/MyContract.sol
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 import "@openzeppelin/upgrades/contracts/Initializable.sol";
 import "@openzeppelin/upgrades/contracts/application/App.sol";

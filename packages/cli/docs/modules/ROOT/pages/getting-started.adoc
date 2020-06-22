@@ -48,7 +48,7 @@ We will write a simple contract in https://solidity.readthedocs.io/[Solidity], t
 [source,solidity]
 ----
 // contracts/Counter.sol
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 contract Counter {
     uint256 public value;
@@ -129,7 +129,7 @@ We will now modify our `Counter` contract to make the `increase` function more i
 [source,solidity]
 ----
 // contracts/Counter.sol
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 contract Counter {
   uint256 public value;

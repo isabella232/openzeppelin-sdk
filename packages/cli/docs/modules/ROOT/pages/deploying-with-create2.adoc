@@ -60,7 +60,7 @@ We'll begin by xref:getting-started.adoc#setting-up-your-project[initializing a 
 [source,solidity]
 ----
 // contracts/Vault.sol
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 import "@openzeppelin/upgrades/contracts/Initializable.sol";
 

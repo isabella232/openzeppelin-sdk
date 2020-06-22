@@ -1,11 +1,11 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 import './BaseAdminUpgradeabilityProxy.sol';
 import './InitializableUpgradeabilityProxy.sol';
 
 /**
  * @title InitializableAdminUpgradeabilityProxy
- * @dev Extends from BaseAdminUpgradeabilityProxy with an initializer for 
+ * @dev Extends from BaseAdminUpgradeabilityProxy with an initializer for
  * initializing the implementation, admin, and init data.
  */
 contract InitializableAdminUpgradeabilityProxy is BaseAdminUpgradeabilityProxy, InitializableUpgradeabilityProxy {
@@ -23,5 +23,13 @@ contract InitializableAdminUpgradeabilityProxy is BaseAdminUpgradeabilityProxy, 
     InitializableUpgradeabilityProxy.initialize(_logic, _data);
     assert(ADMIN_SLOT == bytes32(uint256(keccak256('eip1967.proxy.admin')) - 1));
     _setAdmin(_admin);
+  }
+
+  /**
+   * @dev Only fall back when the sender is not the admin.
+   */
+  function _willFallback() internal override(Proxy) {
+    require(msg.sender != _admin(), "Cannot call fallback function from the proxy admin");
+    super._willFallback();
   }
 }

@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 // Test import with path relative to current file
 import "./DependencyLib.sol";

@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 import "../ownership/Ownable.sol";
 
@@ -21,7 +21,7 @@ contract Package is OpenZeppelinUpgradesOwnable {
   struct Version {
     uint64[3] semanticVersion;
     address contractAddress;
-    bytes contentURI; 
+    bytes contentURI;
   }
 
   mapping (bytes32 => Version) internal versions;
@@ -31,18 +31,18 @@ contract Package is OpenZeppelinUpgradesOwnable {
   /**
    * @dev Returns a version given its semver identifier.
    * @param semanticVersion Semver identifier of the version.
-   * @return Contract address and content URI for the version, or zero if not exists.
+   * @return contractAddress - Contract address and content URI for the version, or zero if not exists.
    */
   function getVersion(uint64[3] memory semanticVersion) public view returns (address contractAddress, bytes memory contentURI) {
     Version storage version = versions[semanticVersionHash(semanticVersion)];
-    return (version.contractAddress, version.contentURI); 
+    return (version.contractAddress, version.contentURI);
   }
 
   /**
    * @dev Returns a contract for a version given its semver identifier.
    * This method is equivalent to `getVersion`, but returns only the contract address.
    * @param semanticVersion Semver identifier of the version.
-   * @return Contract address for the version, or zero if not exists.
+   * @return contractAddress - Contract address for the version, or zero if not exists.
    */
   function getContract(uint64[3] memory semanticVersion) public view returns (address contractAddress) {
     Version storage version = versions[semanticVersionHash(semanticVersion)];
@@ -51,7 +51,7 @@ contract Package is OpenZeppelinUpgradesOwnable {
 
   /**
    * @dev Adds a new version to the package. Only the Owner can add new versions.
-   * Reverts if the specified semver identifier already exists. 
+   * Reverts if the specified semver identifier already exists.
    * Emits a `VersionAdded` event if successful.
    * @param semanticVersion Semver identifier of the version.
    * @param contractAddress Contract address for the version, must be non-zero.
@@ -65,7 +65,7 @@ contract Package is OpenZeppelinUpgradesOwnable {
     // Register version
     bytes32 versionId = semanticVersionHash(semanticVersion);
     versions[versionId] = Version(semanticVersion, contractAddress, contentURI);
-    
+
     // Update latest major
     uint64 major = semanticVersion[0];
     if (major > latestMajor) {
@@ -77,9 +77,9 @@ contract Package is OpenZeppelinUpgradesOwnable {
     uint64 patch = semanticVersion[2];
     uint64[3] storage latestVersionForMajor = versions[majorToLatestVersion[major]].semanticVersion;
     if (semanticVersionIsZero(latestVersionForMajor) // No latest was set for this major
-       || (minor > latestVersionForMajor[1]) // Or current minor is greater 
+       || (minor > latestVersionForMajor[1]) // Or current minor is greater
        || (minor == latestVersionForMajor[1] && patch > latestVersionForMajor[2]) // Or current patch is greater
-       ) { 
+       ) {
       majorToLatestVersion[major] = versionId;
     }
 
@@ -98,9 +98,10 @@ contract Package is OpenZeppelinUpgradesOwnable {
 
   /**
    * @dev Returns the version with the highest semver identifier registered in the package.
-   * For instance, if `1.2.0`, `1.3.0`, and `2.0.0` are present, will always return `2.0.0`, regardless 
+   * For instance, if `1.2.0`, `1.3.0`, and `2.0.0` are present, will always return `2.0.0`, regardless
    * of the order in which they were registered. Returns zero if no versions are registered.
-   * @return Semver identifier, contract address, and content URI for the version, or zero if not exists.
+   * @return semanticVersion Semver identifier, contract address,
+   * and content URI for the version, or zero if not exists.
    */
   function getLatest() public view returns (uint64[3] memory semanticVersion, address contractAddress, bytes memory contentURI) {
     return getLatestByMajor(latestMajor);
@@ -108,15 +109,16 @@ contract Package is OpenZeppelinUpgradesOwnable {
 
   /**
    * @dev Returns the version with the highest semver identifier for the given major.
-   * For instance, if `1.2.0`, `1.3.0`, and `2.0.0` are present, will return `1.3.0` for major `1`, 
+   * For instance, if `1.2.0`, `1.3.0`, and `2.0.0` are present, will return `1.3.0` for major `1`,
    * regardless of the order in which they were registered. Returns zero if no versions are registered
    * for the specified major.
    * @param major Major identifier to query
-   * @return Semver identifier, contract address, and content URI for the version, or zero if not exists.
+   * @return semanticVersion - Semver identifier, contract address,
+   * and content URI for the version, or zero if not exists.
    */
   function getLatestByMajor(uint64 major) public view returns (uint64[3] memory semanticVersion, address contractAddress, bytes memory contentURI) {
     Version storage version = versions[majorToLatestVersion[major]];
-    return (version.semanticVersion, version.contractAddress, version.contentURI); 
+    return (version.semanticVersion, version.contractAddress, version.contentURI);
   }
 
   function semanticVersionHash(uint64[3] memory version) internal pure returns (bytes32) {
