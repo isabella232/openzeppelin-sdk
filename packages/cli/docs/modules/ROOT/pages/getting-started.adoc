@@ -49,6 +49,7 @@ We will write a simple contract in https://solidity.readthedocs.io/[Solidity], t
 ----
 // contracts/Counter.sol
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 contract Counter {
     uint256 public value;
@@ -130,6 +131,7 @@ We will now modify our `Counter` contract to make the `increase` function more i
 ----
 // contracts/Counter.sol
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 contract Counter {
   uint256 public value;

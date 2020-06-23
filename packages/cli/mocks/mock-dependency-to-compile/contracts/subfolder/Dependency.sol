@@ -1,4 +1,5 @@
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 // Test import with path relative to current file
 import "./DependencyLib.sol";

@@ -1,4 +1,5 @@
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 // Added just for having a circular reference
 import "./StorageMocks3.sol";

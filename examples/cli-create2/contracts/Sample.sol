@@ -1,4 +1,5 @@
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 contract Sample {
   uint256 public value;

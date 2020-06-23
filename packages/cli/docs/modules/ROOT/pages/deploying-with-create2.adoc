@@ -61,6 +61,7 @@ We'll begin by xref:getting-started.adoc#setting-up-your-project[initializing a 
 ----
 // contracts/Vault.sol
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 import "@openzeppelin/upgrades/contracts/Initializable.sol";
 

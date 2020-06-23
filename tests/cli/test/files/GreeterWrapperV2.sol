@@ -1,4 +1,5 @@
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 import "mock-stdlib/contracts/Greeter.sol";
 import "mock-stdlib/contracts/SharedLibrary.sol";

@@ -1,4 +1,5 @@
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 contract ERC20Fake {
   mapping (address => uint256) private _balances;

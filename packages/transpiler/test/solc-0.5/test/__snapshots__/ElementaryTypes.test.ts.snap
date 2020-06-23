@@ -2,6 +2,7 @@
 
 exports[`ElementaryTypes contract is converted to a valid ElementaryTypesUpgradeable contract 1`] = `
 "pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 import \\"@openzeppelin/upgrades/contracts/Initializable.sol\\";
 
 contract ElementaryTypesUpgradeable is Initializable  {

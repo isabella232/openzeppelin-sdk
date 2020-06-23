@@ -105,6 +105,7 @@ Now, let's write our exchange contract in `contracts/TokenExchange.sol`, using a
 ----
 // contracts/TokenExchange.sol
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 // Import base Initializable contract
 import "@openzeppelin/upgrades/contracts/Initializable.sol";

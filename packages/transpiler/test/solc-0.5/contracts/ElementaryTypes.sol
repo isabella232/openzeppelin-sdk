@@ -1,4 +1,5 @@
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 contract ElementaryTypes  {
     address public owner = address(0x123);

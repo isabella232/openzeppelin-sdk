@@ -150,6 +150,7 @@ To ensure that the `initialize` function can only be called once, a simple modif
 // contracts/MyContract.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 import "@openzeppelin/upgrades/contracts/Initializable.sol";
 

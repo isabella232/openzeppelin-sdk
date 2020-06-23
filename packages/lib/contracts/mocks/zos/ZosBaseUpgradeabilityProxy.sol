@@ -1,4 +1,5 @@
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 import '../../upgradeability/Proxy.sol';
 import '../../utils/Address.sol';

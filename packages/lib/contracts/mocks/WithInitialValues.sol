@@ -1,4 +1,5 @@
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 contract WithoutInitialValuesInFieldsDeclarations {
   uint constant myConst = 115994;

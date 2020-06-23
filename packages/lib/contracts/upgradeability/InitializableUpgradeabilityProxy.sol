@@ -1,4 +1,5 @@
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 import './BaseUpgradeabilityProxy.sol';
 
@@ -24,5 +25,5 @@ contract InitializableUpgradeabilityProxy is BaseUpgradeabilityProxy {
       (bool success,) = _logic.delegatecall(_data);
       require(success);
     }
-  }  
+  }
 }

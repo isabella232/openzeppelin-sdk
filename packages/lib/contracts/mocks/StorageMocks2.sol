@@ -1,4 +1,5 @@
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 import "./StorageMocks.sol";
 import "mock-dependency/contracts/DependencyStorageMock.sol";

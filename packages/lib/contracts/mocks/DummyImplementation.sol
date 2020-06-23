@@ -1,4 +1,5 @@
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 abstract contract Impl {
   function version() public pure virtual returns (string memory);

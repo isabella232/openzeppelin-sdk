@@ -16,6 +16,7 @@ This means that, when using a contract with the OpenZeppelin Upgrades, you need 
 // NOTE: Do not use this code snippet, it's incomplete and has a critical vulnerability!
 
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 
 contract MyContract {
@@ -34,6 +35,7 @@ However, while Solidity ensures that a `constructor` is called only once in the 
 // contracts/MyContract.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 
 contract MyContract {
@@ -55,6 +57,7 @@ Since this pattern is very common when writing upgradeable contracts, OpenZeppel
 // contracts/MyContract.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 import "@openzeppelin/upgrades/contracts/Initializable.sol";
 
@@ -75,6 +78,7 @@ Another difference between a `constructor` and a regular function is that Solidi
 // contracts/MyContract.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 import "@openzeppelin/upgrades/contracts/Initializable.sol";
 
@@ -107,6 +111,7 @@ Keep in mind that this restriction affects not only your contracts, but also the
 ----
 // @openzeppelin/contracts/token/ERC20/ERC20.sol
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
   ...
 
@@ -134,6 +139,7 @@ This means you should not be using these contracts in your OpenZeppelin Upgrades
 ----
 // @openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
   ...
 contract ERC20UpgradeSafe is Initializable, ContextUpgradeSafe, IERC20 {
   ...
@@ -203,6 +209,7 @@ For instance, in the following example, even if `MyContract` is upgradeable (if 
 // contracts/MyContract.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 import "@openzeppelin/upgrades/contracts/Initializable.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -223,6 +230,7 @@ The easiest way around this issue is to avoid creating contracts on your own alt
 // contracts/MyContract.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 import "@openzeppelin/contracts-ethereum-package/contracts/Initializable.sol";
 import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/IERC20.sol";
@@ -250,6 +258,7 @@ An advanced alternative, if you need to create upgradeable contracts on the fly,
 // contracts/MyContract.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 import "@openzeppelin/upgrades/contracts/Initializable.sol";
 import "@openzeppelin/upgrades/contracts/application/App.sol";

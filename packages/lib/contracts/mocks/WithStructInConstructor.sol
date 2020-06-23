@@ -1,4 +1,5 @@
 pragma experimental ABIEncoderV2;
+// SPDX-License-Identifier: MIT
 
 contract WithStructInConstructor {
 

@@ -2,6 +2,7 @@
 
 exports[`GLDToken contract is converted to a valid GLDTokenUpgradeable contract 1`] = `
 "pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 import \\"@openzeppelin/contracts/token/ERC20/ERC20.sol\\";
 import \\"./@openzeppelin/contracts/token/ERC20/ERC20Upgradeable.sol\\";
@@ -33,6 +34,7 @@ contract GLDTokenUpgradeable is Initializable, ERC20Upgradeable, ERC20DetailedUp
 
 exports[`GLDToken contract is converted to a valid GLDTokenUpgradeable contract 2`] = `
 "pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 import \\"@openzeppelin/contracts/token/ERC20/IERC20.sol\\";
 import \\"@openzeppelin/upgrades/contracts/Initializable.sol\\";
@@ -99,6 +101,7 @@ contract ERC20DetailedUpgradeable is Initializable, IERC20 {
 
 exports[`GLDToken contract is converted to a valid GLDTokenUpgradeable contract 3`] = `
 "pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 import \\"@openzeppelin/contracts/GSN/Context.sol\\";
 import \\"../../GSN/ContextUpgradeable.sol\\";
@@ -347,6 +350,7 @@ contract ERC20Upgradeable is Initializable, ContextUpgradeable, IERC20 {
 
 exports[`GLDToken contract is converted to a valid GLDTokenUpgradeable contract 4`] = `
 "pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 import \\"@openzeppelin/upgrades/contracts/Initializable.sol\\";
 
 /*

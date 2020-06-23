@@ -29,6 +29,7 @@ We can now write the code for `Product`, a simple contract that stores a value. 
 // contracts/Product.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 import "@openzeppelin/upgrades/contracts/Initializable.sol";
 
@@ -49,6 +50,7 @@ The `Factory` is a bit more involved: we'll provide it with our project's xref:c
 // contracts/Factory.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
 
 import "@openzeppelin/upgrades/contracts/Initializable.sol";
 import "@openzeppelin/upgrades/contracts/application/App.sol";
