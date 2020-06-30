@@ -16,7 +16,7 @@ interface IERC165 {
      * @dev Interface identification is specified in ERC-165. This function
      * uses less than 30,000 gas.
      */
-    function supportsInterface(bytes4 interfaceId) external view virtual returns (bool);
+    function supportsInterface(bytes4 interfaceId) external view returns (bool);
 }
 
 // File: contracts/token/MockERC721/IMockERC721.sol

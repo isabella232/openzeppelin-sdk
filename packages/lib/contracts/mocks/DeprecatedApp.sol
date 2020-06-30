@@ -140,7 +140,7 @@ contract DeprecatedApp is OpenZeppelinUpgradesOwnable {
    */
    function create(string memory packageName, string memory contractName, bytes memory data) payable public returns (AdminUpgradeabilityProxy) {
     address implementation = getImplementation(packageName, contractName);
-     AdminUpgradeabilityProxy proxy = (new AdminUpgradeabilityProxy).value(msg.value)(implementation, data);
+     AdminUpgradeabilityProxy proxy = (new AdminUpgradeabilityProxy){value: msg.value}(implementation, data);
      emit ProxyCreated(address(proxy));
      return proxy;
   }
@@ -168,6 +168,6 @@ contract DeprecatedApp is OpenZeppelinUpgradesOwnable {
    */
   function upgradeAndCall(AdminUpgradeabilityProxy proxy, string memory packageName, string memory contractName, bytes memory data) payable public onlyOwner {
     address implementation = getImplementation(packageName, contractName);
-    proxy.upgradeToAndCall.value(msg.value)(implementation, data);
+    proxy.upgradeToAndCall{value: msg.value}(implementation, data);
   }
 }
